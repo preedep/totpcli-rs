@@ -22,3 +22,6 @@ Cargo.lock
 /.idea/totpcli-rs.iml
 /.idea/vcs.xml
 /.idea/developer-tools.xml
+key.txt
+qr.png
+
