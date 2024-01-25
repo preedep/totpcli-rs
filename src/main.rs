@@ -1,11 +1,11 @@
-use std::fs;
+use std::{fs, thread};
+use std::time::Duration;
 
 use clap::Parser;
 use dialoguer::Input;
 use dialoguer::theme::ColorfulTheme;
 use log::debug;
 use totp_rs::{Algorithm, Secret, TOTP};
-
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -34,7 +34,6 @@ fn main() {
                 let qr_code = totp.get_qr_png().expect("Failed to generate QR Code");
                 let _rs = fs::remove_file("qr.png");
                 fs::write("qr.png", qr_code).unwrap();
-
             }
             "validate" => {
                 debug!("Validate mode");
@@ -43,8 +42,13 @@ fn main() {
                     panic!("Key is empty");
                 }
                 let totp = get_totp(key);
-                let code = totp.generate_current().unwrap();
-                debug!("Code: {}", code);
+                let ten_seconds = Duration::from_secs(10);
+                loop {
+                    // your loop code here
+                    let code = totp.generate_current().unwrap();
+                    debug!("Code: {}", code);
+                    thread::sleep(ten_seconds);
+                }
             }
             _ => {
                 panic!("Invalid mode");
