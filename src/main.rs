@@ -35,20 +35,6 @@ fn main() {
                 let _rs = fs::remove_file("qr.png");
                 fs::write("qr.png", qr_code).unwrap();
 
-
-                /*
-                let conf = Config {
-                    // set offset
-                    x: 0,
-                    y: 0,
-                    // set dimensions
-                    width: Some(80),
-                    height: Some(25),
-                    ..Default::default()
-                };
-                print_from_file("qr.png", &conf).expect("Image printing failed.");
-
-                 */
             }
             "validate" => {
                 debug!("Validate mode");
