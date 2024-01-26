@@ -1,9 +1,9 @@
-use std::time::Duration;
 use std::{fs, thread};
+use std::time::Duration;
 
 use clap::Parser;
-use dialoguer::theme::ColorfulTheme;
 use dialoguer::Input;
+use dialoguer::theme::ColorfulTheme;
 use log::debug;
 use totp_rs::{Algorithm, Secret, TOTP};
 
@@ -38,10 +38,8 @@ fn main() {
                 debug!("YourKey: {}", input);
                 fs::write("key.txt", &input).unwrap();
                 let totp = get_totp(input, issuer, account_name);
-
-                let qr_code = totp.get_qr_png().expect("Failed to generate QR Code");
-                let _rs = fs::remove_file("qr.png");
-                fs::write("qr.png", qr_code).unwrap();
+                let url = totp.get_url();
+                qr2term::print_qr(url).unwrap();
             }
             "validate" => {
                 debug!("Validate mode");
