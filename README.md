@@ -17,7 +17,7 @@ Options:
 
 ####  mode: Mode to run with generate QR Code with mode = qr
 ```bash
- ./target/debug/totpcli-rs -m qr 
+RUST_LOG=debug ./target/debug/totpcli-rs -m qr 
 ```
 you will get prompts input key (least 16 characters) after than you will get qr code image via terminal.
 
@@ -25,7 +25,7 @@ you can use Google Authenticator to scan the QR Code
 
 #### mode: Mode to run with generate QR Code with mode = validate (default)
 ```bash
- ./target/debug/totpcli-rs
+RUST_LOG=debug ./target/debug/totpcli-rs
 ```
 you will get current TOTP code
 
