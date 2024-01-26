@@ -1,9 +1,9 @@
-use std::{fs, thread};
 use std::time::Duration;
+use std::{fs, thread};
 
 use clap::Parser;
-use dialoguer::Input;
 use dialoguer::theme::ColorfulTheme;
+use dialoguer::Input;
 use log::debug;
 use totp_rs::{Algorithm, Secret, TOTP};
 
@@ -37,7 +37,7 @@ fn main() {
                     .unwrap();
                 debug!("YourKey: {}", input);
                 fs::write("key.txt", &input).unwrap();
-                let totp = get_totp(input,issuer,account_name);
+                let totp = get_totp(input, issuer, account_name);
 
                 let qr_code = totp.get_qr_png().expect("Failed to generate QR Code");
                 let _rs = fs::remove_file("qr.png");
@@ -45,11 +45,15 @@ fn main() {
             }
             "validate" => {
                 debug!("Validate mode");
-                let key = fs::read_to_string("key.txt").expect("Something went wrong reading the file");
+                let key =
+                    fs::read_to_string("key.txt").expect("Something went wrong reading the file");
                 if key.is_empty() {
                     panic!("Key is empty");
                 }
-                let totp = get_totp(key,issuer,account_name);
+                let totp = get_totp(key,
+                                    issuer,
+                                    account_name);
+
                 let ten_seconds = Duration::from_secs(10);
                 loop {
                     // your loop code here
@@ -65,7 +69,7 @@ fn main() {
     }
 }
 
-fn get_totp(input: String,issuer: String,account_name: String) -> TOTP {
+fn get_totp(input: String, issuer: String, account_name: String) -> TOTP {
     let totp = TOTP::new(
         Algorithm::SHA1,
         6,
@@ -74,6 +78,7 @@ fn get_totp(input: String,issuer: String,account_name: String) -> TOTP {
         Secret::Raw(input.into_bytes()).to_bytes().unwrap(),
         Some(issuer),
         account_name,
-    ).unwrap();
+    )
+    .unwrap();
     totp
 }
