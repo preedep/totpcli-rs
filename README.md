@@ -21,6 +21,10 @@ RUST_LOG=debug ./target/debug/totpcli-rs -m qr
 ```
 you will get prompts input key (least 16 characters) after than you will get qr code image via terminal.
 
+Example (QR Code on terminal)
+
+![alt text](./img/example1.png)
+
 you can use Google Authenticator to scan the QR Code
 
 #### mode: Mode to run with generate QR Code with mode = validate (default)
