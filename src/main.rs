@@ -13,12 +13,20 @@ struct Cli {
     /// Optional mode to run with generate QR Code with mode = qr
     #[arg(short, long, default_value = "validate")]
     mode: Option<String>,
+    /// Optional issuer
+    #[arg(short, long, default_value = "mytotp")]
+    issuer: Option<String>,
+    /// Optional account name
+    #[arg(short, long, default_value = "myaccount")]
+    account_name: Option<String>,
 }
 
 fn main() {
     pretty_env_logger::init();
     debug!("Starting up");
     let args = Cli::parse();
+    let issuer = args.issuer.unwrap();
+    let account_name = args.account_name.unwrap();
     if let Some(mode) = args.mode.as_deref() {
         match mode {
             "qr" => {
@@ -29,7 +37,7 @@ fn main() {
                     .unwrap();
                 debug!("YourKey: {}", input);
                 fs::write("key.txt", &input).unwrap();
-                let totp = get_totp(input);
+                let totp = get_totp(input,issuer,account_name);
 
                 let qr_code = totp.get_qr_png().expect("Failed to generate QR Code");
                 let _rs = fs::remove_file("qr.png");
@@ -41,7 +49,7 @@ fn main() {
                 if key.is_empty() {
                     panic!("Key is empty");
                 }
-                let totp = get_totp(key);
+                let totp = get_totp(key,issuer,account_name);
                 let ten_seconds = Duration::from_secs(10);
                 loop {
                     // your loop code here
@@ -57,15 +65,15 @@ fn main() {
     }
 }
 
-fn get_totp(input: String) -> TOTP {
+fn get_totp(input: String,issuer: String,account_name: String) -> TOTP {
     let totp = TOTP::new(
         Algorithm::SHA1,
         6,
         1,
         30,
         Secret::Raw(input.into_bytes()).to_bytes().unwrap(),
-        Some("Preedee".to_string()),
-        "preedee.ponchevin@gmail.com".to_string(),
+        Some(issuer),
+        account_name,
     ).unwrap();
     totp
 }
