@@ -19,7 +19,7 @@ Options:
 ```bash
  ./target/debug/totpcli-rs -m qr 
 ```
-you will get prompts input key (least 16 characters) after than you will get qr code image file name (default: qr.png).
+you will get prompts input key (least 16 characters) after than you will get qr code image via terminal.
 
 you can use Google Authenticator to scan the QR Code
 
